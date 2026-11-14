@@ -1,6 +1,6 @@
 # Real-Time IP Camera Video Streaming System
 
-A Python application that connects to an IP camera over a local network and displays a real-time video stream using OpenCV.
+A Python application that connects to an IP camera over a local network and displays a real-time video stream using OpenCV. The system supports frame processing, screenshot capture, video recording, connection recovery and motion detection.
 
 ## Features
 
@@ -8,8 +8,8 @@ A Python application that connects to an IP camera over a local network and disp
 - Displays live video.
 - Resizes frames while preserving the original aspect ratio.
 - Displays the camera name, timestamp, resolution and estimated FPS.
-- Captures and saves screenshots.
-- Records and saves video clips.
+- Captures and saves timestamped screenshots.
+- Records and saves timestamped video clips.
 - Detects failed camera connections.
 - Attempts automatic reconnection when the stream is interrupted.
 - Releases camera and recording resources safely.
@@ -24,6 +24,7 @@ A Python application that connects to an IP camera over a local network and disp
 - Requests
 - Android IP Webcam
 - Jupyter Notebook
+- pytest
 - Git and GitHub
 
 ## Project Structure
@@ -33,6 +34,9 @@ ip-camera-streaming-system/
 ├── config/
 │   └── camera_config.json
 ├── docs/
+│   ├── evidence/
+│   ├── test_results.md
+│   └── technical_report.pdf
 ├── notebooks/
 │   └── ip_camera_streaming.ipynb
 ├── recordings/
@@ -42,6 +46,7 @@ ip-camera-streaming-system/
 │       ├── __init__.py
 │       └── camera_viewer.py
 ├── tests/
+│   └── test_camera.py
 ├── requirements.txt
 ├── pyproject.toml
 ├── uv.lock
@@ -98,6 +103,14 @@ uv run python src/ip_camera_streaming_system/camera_viewer.py
 
 The live camera window will open when the connection succeeds.
 
+## Running the Jupyter Notebook
+
+The `notebooks/` directory contains the notebook used to develop and demonstrate the project.
+
+Open `notebooks/ip_camera_streaming.ipynb` in VS Code with the project's Python environment selected as the notebook kernel.
+
+Run the notebook cells in order to configure the camera, establish the stream, process frames, capture screenshots, record videos and test error handling.
+
 ## Keyboard Controls
 
 | Key | Action |
@@ -108,6 +121,22 @@ The live camera window will open when the connection succeeds.
 | Ctrl + C | Interrupt execution from the terminal |
 
 Screenshots are saved in the `screenshots/` directory, while video recordings are saved in the `recordings/` directory.
+
+## Bonus Challenge - Motion Detection
+
+The project includes a bonus motion detection feature implemented using OpenCV's Background Subtraction MOG2 algorithm. The feature identifies moving objects, draws bounding boxes around detected movement and displays a motion status indicator.
+
+## Testing
+
+The project includes automated tests for frame resizing and motion detection.
+
+Run the automated tests from the project root:
+
+```bash
+uv run pytest tests/ -v
+```
+
+Manual testing results and supporting screenshots are documented in the `docs/` directory.
 
 ## Error Handling
 
@@ -122,11 +151,13 @@ The application handles:
 
 ## Development
 
-The `notebooks/` directory contains the Jupyter Notebook used during development and testing.
-
 The standalone application is located in:
 
 `src/ip_camera_streaming_system/camera_viewer.py`
+
+The Jupyter Notebook used during development and testing is located in:
+
+`notebooks/ip_camera_streaming.ipynb`
 
 ## License
 
