@@ -1,0 +1,26 @@
+[project]
+name = "ip-camera-streaming-system"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Sylvia Ndili", email = "ndilisylvia@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=1.26",
+    "opencv-python>=4.8",
+    "requests>=2.31",
+]
+
+[project.scripts]
+ip-camera-streaming-system = "ip_camera_streaming_system:main"
+
+[build-system]
+requires = ["uv_build>=0.13.5,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.4.0",
+]
