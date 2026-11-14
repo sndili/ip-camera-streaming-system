@@ -63,6 +63,42 @@ def resize_frame(frame):
     return cv2.resize(frame, (display_width, new_height))
 
 
+def detect_motion(frame, background_subtractor):
+    """Detect moving objects and draw bounding boxes around them."""
+    foreground_mask = background_subtractor.apply(frame)
+
+    _, foreground_mask = cv2.threshold(
+        foreground_mask, 200, 255, cv2.THRESH_BINARY
+    )
+
+    contours, _ = cv2.findContours(
+        foreground_mask,
+        cv2.RETR_EXTERNAL,
+        cv2.CHAIN_APPROX_SIMPLE
+    )
+
+    motion_detected = False
+
+    for contour in contours:
+        area = cv2.contourArea(contour)
+
+        if area > 1000:
+            x, y, w, h = cv2.boundingRect(contour)
+
+            cv2.rectangle(
+                frame,
+                (x, y),
+                (x + w, y + h),
+                (0, 255, 0),
+                2
+            )
+
+            motion_detected = True
+
+    return frame, motion_detected
+
+
+
 def main():
     camera = None
     video_writer = None
@@ -152,38 +188,11 @@ def main():
             height, width = frame.shape[:2]
 
            
-            # Apply background subtraction
-            foreground_mask = background_subtractor.apply(frame)
-
-            # Remove shadows
-            _, foreground_mask = cv2.threshold(
-                foreground_mask, 200, 255, cv2.THRESH_BINARY
+            
+            # Detect motion and draw bounding boxes
+            frame, motion_detected = detect_motion(
+                frame, background_subtractor
             )
-
-            # Find moving objects
-            contours, _ = cv2.findContours(
-                foreground_mask,
-                cv2.RETR_EXTERNAL,
-                cv2.CHAIN_APPROX_SIMPLE
-            )
-
-            motion_detected = False
-
-            for contour in contours:
-                area = cv2.contourArea(contour)
-
-                if area > 1000:
-                    x, y, w, h = cv2.boundingRect(contour)
-
-                    cv2.rectangle(
-                        frame,
-                        (x, y),
-                        (x + w, y + h),
-                        (0, 255, 0),
-                        2
-                    )
-
-                    motion_detected = True
 
             # Display motion status
             if motion_detected:
@@ -206,6 +215,7 @@ def main():
                     (0, 255, 0),
                     2
                 )
+
 
             # Calculate FPS
             current_time = time.time()
