@@ -27,4 +27,4 @@ All ten manual test cases passed during testing.
 
 ## Test Evidence
 
-Screenshots and video evidence should be collected and included with the final project report.
+Screenshots and video evidence were collected and included in the final project report.
